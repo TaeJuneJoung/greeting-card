@@ -9,28 +9,6 @@ var isMobile = false;
 var isIos = false;
 
 window.onload = function () {
-  var params_str = window.location.search;
-  params_str = decodeURIComponent(params_str);
-  params_str = params_str.replace("?", "");
-  var params = params_str.split("&");
-
-  var toName = "";
-  var fromName = "";
-  params.map((param) => {
-    const paramSplit = param.split("=");
-    const key = paramSplit[0];
-    const value = paramSplit[1];
-    if (key === "to") toName = value;
-    else if (key === "from") fromName = value;
-  });
-
-  document.querySelector(".mode").addEventListener("click", () => {
-    document.body.classList.toggle("mode-dark");
-  });
-
-  document.querySelector(".target-name").innerText = toName;
-  document.querySelector(".from-name").innerText = fromName;
-
   wrap = document.querySelector(".contentWrap");
   isMobile = mobileChk();
   isIos = iosChk();
@@ -66,6 +44,28 @@ window.onload = function () {
     });
     loop();
   }
+
+  var params_str = window.location.search;
+  params_str = decodeURIComponent(params_str);
+  params_str = params_str.replace("?", "");
+  var params = params_str.split("&");
+
+  var toName = "";
+  var fromName = "";
+  params.map((param) => {
+    const paramSplit = param.split("=");
+    const key = paramSplit[0];
+    const value = paramSplit[1];
+    if (key === "to") toName = value;
+    else if (key === "from") fromName = value;
+  });
+
+  document.querySelector(".mode").addEventListener("click", () => {
+    document.body.classList.toggle("mode-dark");
+  });
+
+  document.querySelector(".target-name").innerText = toName;
+  document.querySelector(".from-name").innerText = fromName;
 };
 
 function loopMobile() {
