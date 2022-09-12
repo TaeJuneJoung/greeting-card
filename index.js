@@ -13,59 +13,69 @@ window.onload = function () {
   isMobile = mobileChk();
   isIos = iosChk();
 
-  if (isMobile) {
-    //모바일이면 실행
-    if (isIos) {
-      //ios일때만 실행
-      DeviceOrientationEvent.requestPermission()
-        .then(function () {
-          // console.log('DeviceOrientationEvent, DeviceMotionEvent enabled');
-          mobileOrientationChk();
-        })
-        .catch(console.error);
+  document.querySelector(".send-card button").addEventListener("click", () => {
+    document.querySelector(".send-card").classList.add("d-none");
+    wrap.classList.remove("d-none");
+    document.querySelector(".mode").classList.remove("d-none");
+
+    if (isMobile) {
+      //모바일이면 실행
+      if (
+        isIos &&
+        typeof DeviceOrientationEvent.requestPermission === "function"
+      ) {
+        //ios일때만 실행
+        DeviceOrientationEvent.requestPermission()
+          .then(() => {
+            mobileOrientationChk();
+          })
+          .catch((err) => {
+            alert(err);
+          });
+      } else {
+        mobileOrientationChk();
+      }
+
+      function mobileOrientationChk() {
+        window.addEventListener("deviceorientation", function (event) {
+          //디바이스가 움직임 감지될때 실행
+          x = event.gamma;
+          y = event.beta;
+        });
+        loopMobile();
+      }
     } else {
-      mobileOrientationChk();
-    }
-
-    function mobileOrientationChk() {
-      window.addEventListener("deviceorientation", function (event) {
-        //디바이스가 움직임 감지될때 실행
-        x = event.gamma;
-        y = event.beta;
+      //pc면 실행
+      window.addEventListener("mousemove", function (e) {
+        x = e.clientX - window.innerWidth / 2;
+        y = e.clientY - window.innerHeight / 2;
+        //마우스 위치값을 화면의 정가운데가 0,0이 되도록 맞춤
       });
-      loopMobile();
+      loop();
     }
-  } else {
-    //pc면 실행
-    window.addEventListener("mousemove", function (e) {
-      x = e.clientX - window.innerWidth / 2;
-      y = e.clientY - window.innerHeight / 2;
-      //마우스 위치값을 화면의 정가운데가 0,0이 되도록 맞춤
+
+    var params_str = window.location.search;
+    params_str = decodeURIComponent(params_str);
+    params_str = params_str.replace("?", "");
+    var params = params_str.split("&");
+
+    var toName = "";
+    var fromName = "";
+    params.map((param) => {
+      const paramSplit = param.split("=");
+      const key = paramSplit[0];
+      const value = paramSplit[1];
+      if (key === "to") toName = value;
+      else if (key === "from") fromName = value;
     });
-    loop();
-  }
 
-  var params_str = window.location.search;
-  params_str = decodeURIComponent(params_str);
-  params_str = params_str.replace("?", "");
-  var params = params_str.split("&");
+    document.querySelector(".mode").addEventListener("click", () => {
+      document.body.classList.toggle("mode-dark");
+    });
 
-  var toName = "";
-  var fromName = "";
-  params.map((param) => {
-    const paramSplit = param.split("=");
-    const key = paramSplit[0];
-    const value = paramSplit[1];
-    if (key === "to") toName = value;
-    else if (key === "from") fromName = value;
+    document.querySelector(".target-name").innerText = toName;
+    document.querySelector(".from-name").innerText = fromName;
   });
-
-  document.querySelector(".mode").addEventListener("click", () => {
-    document.body.classList.toggle("mode-dark");
-  });
-
-  document.querySelector(".target-name").innerText = toName;
-  document.querySelector(".from-name").innerText = fromName;
 };
 
 function loopMobile() {

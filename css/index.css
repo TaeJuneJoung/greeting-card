@@ -13,6 +13,54 @@ body {
   color: white;
 }
 
+.send-card {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.send-card button {
+  font-size: 32px;
+  width: 15rem;
+  border: 1px solid #cd9cf2;
+  border-radius: 2rem;
+  background-image: linear-gradient(to bottom, #cd9cf2 0%, #f6f3ff 100%);
+}
+
+.send-card button:hover {
+  color: white;
+  border: 1px solid #b080d6;
+  background-image: linear-gradient(to bottom, #b080d6 0%, #e3bfff 100%);
+}
+
+.send-card button:active {
+  color: white;
+  border: 1px solid #9069b1;
+  background-image: linear-gradient(to bottom, #9069b1 0%, #cd9cf2 100%);
+}
+
+.send-card button::before {
+  content: "";
+  position: absolute;
+  width: 3rem;
+  height: 3rem;
+  left: 2rem;
+  bottom: 3.75rem;
+  background: url(../image/tiger.png) center center/contain no-repeat;
+  transition: all 0.3s ease-in-out;
+}
+
+.send-card button:hover::before {
+  transform: translate(0.25rem, -0.75rem) scale(1.5);
+}
+
+.send-card .send-card-content {
+  text-align: center;
+  color: purple;
+  margin-top: 0.5rem;
+}
+
 .contentWrap {
   position: absolute;
   top: 50%;
@@ -223,4 +271,12 @@ footer {
   text-decoration: none;
   color: lightskyblue;
   cursor: pointer;
+}
+
+.d-none {
+  display: none;
+}
+
+.d-block {
+  display: block;
 }
